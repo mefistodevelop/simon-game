@@ -2,8 +2,8 @@
   <div id="app">
     <h1 class="title">Simon the Game</h1>
     <div class="container">
-      <Simon />
-      <Panel v-model="currentLevel" />
+      <Simon :active="activeElement" />
+      <Panel v-on:start="startGame" v-model="currentLevel" />
     </div>
   </div>
 </template>
@@ -17,7 +17,10 @@
     components: { Simon, Panel },
     data() {
       return {
+        isStarted: false,
+        round: 0,
         currentLevel: 'easy',
+        activeElement: '',
         levels: {
           easy: 1500,
           medium: 1000,
@@ -25,7 +28,11 @@
         },
       };
     },
-    
+    methods: {
+      startGame() {
+        this.isStarted = true;
+      },
+    },
   }
 </script>
 

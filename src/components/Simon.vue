@@ -1,30 +1,29 @@
 <template>
-  <div class="simon">
-    <audio ref="blue-sound">
-      <source src="../assets/sounds/1.ogg" type="audio/ogg"/>
-      <source src="../assets/sounds/1.mp3" type="audio/mpeg"/>
-    </audio>
-    <audio ref="yellow-sound">
-      <source src="../assets/sounds/2.ogg" type="audio/ogg"/>
-      <source src="../assets/sounds/2.mp3" type="audio/mpeg"/>
-    </audio>
-    <audio ref="red-sound">
-      <source src="../assets/sounds/3.ogg" type="audio/ogg"/>
-      <source src="../assets/sounds/3.mp3" type="audio/mpeg"/>
-    </audio> 
-    <audio ref="green-sound">
-      <source src="../assets/sounds/4.ogg" type="audio/ogg"/>
-      <source src="../assets/sounds/4.mp3" type="audio/mpeg"/>
-    </audio>
-    
+  <div class="simon">    
     <div class="half-left">
-      <div class="quarter top-left" @click="playAudio('blue-sound')"></div>
-      <div class="quarter bottom-left" @click="playAudio('red-sound')"></div>
+      <div 
+        class="quarter top-left"
+        :class="{'top-left_flashed': activeElement === 'blue'}"
+        @click="playAudio(sounds.blue)"
+      ></div>
+      <div 
+        class="quarter bottom-left"
+        :class="{'bottom-left_flashed': activeElement === 'yellow'}"
+        @click="playAudio(sounds.yellow)"
+      ></div>
     </div>
 
     <div class="half-right">
-      <div class="quarter top-right" @click="playAudio('yellow-sound')"></div>
-      <div class="quarter bottom-right" @click="playAudio('yellow-sound')"></div>
+      <div 
+        class="quarter top-right"
+        :class="{'top-right_flashed': activeElement === 'red'}"
+        @click="playAudio(sounds.red)"
+      ></div>
+      <div 
+        class="quarter bottom-right"
+        :class="{'bottom-right_flashed': activeElement === 'green'}"
+        @click="playAudio(sounds.green)"
+      ></div>
     </div>
   </div>
 </template>
@@ -32,9 +31,27 @@
 <script>
   export default {
     name: 'Simon',
+    data() {
+      return {
+        activeElement: this.active,
+        sounds: {
+          red: require('../assets/sounds/1.mp3'),
+          blue: require('../assets/sounds/2.mp3'),
+          yellow: require('../assets/sounds/3.mp3'),
+          green: require('../assets/sounds/4.mp3'),
+        },
+      };
+    },
     methods: {
-      playAudio(ref) {
-        this.$refs[ref].play();
+      playAudio(src) {
+        const audio = new Audio(src);
+        audio.play();
+      },
+    },
+    props: {
+      active: {
+        type: String,
+        default: '',
       },
     },
   };
@@ -42,6 +59,10 @@
 
 <style lang="scss" scoped>
   $simon-size: 13rem;
+  $active-blue: #0000ff;
+  $active-red: #ff0000;
+  $active-yellow: #ffff00;
+  $active-green: #00ff00;
 
   .simon {
     display: flex;
@@ -62,7 +83,11 @@
       }
 
       &:active {
-        background-color: #0000ff;
+        background-color: $active-blue;
+      }
+
+      &_flashed {
+        background-color: $active-blue;
       }
     }
 
@@ -75,7 +100,11 @@
       }
 
       &:active {
-        background-color: #ff0000;
+        background-color: $active-red;
+      }
+
+      &_flashed {
+        background-color: $active-red;
       }
     }
   }
@@ -89,8 +118,12 @@
         box-shadow: -2px 2px 1px 1px rgb(156, 156, 156);
       }
 
-      &:active {
-        background-color: #ffff00;
+     &:active {
+        background-color: $active-yellow;
+      }
+
+      &_flashed {
+        background-color: $active-yellow;
       }
     }
 
@@ -103,7 +136,11 @@
       }
 
       &:active {
-        background-color: #00ff00;
+        background-color: $active-green;
+      }
+
+      &_flashed {
+        background-color: $active-green;
       }
     }
   }
