@@ -1,9 +1,9 @@
 <template>
   <div class="panel">
     <div class="info">
-      <h2 class="subtitle">Round: 1</h2>
-      <button class="button">Start</button>
-      <span class="status">You lost after 100 round</span>
+      <h2 class="subtitle">Round: {{ round }}</h2>
+      <button type="button" class="button" @click="$emit('start')">Start</button>
+      <span v-show="result > 0" class="status">You lost after {{ result }} rounds</span>
     </div>
 
     <div class="options">
@@ -52,13 +52,20 @@
     name: 'Panel',
     data() {
       return {
-        pickedLevel: 'easy',
       };
     },
     props: {
       value: {
         type: String,
-        default: 'easy'
+        default: ''
+      },
+      round: {
+        type: Number,
+        default: 0,
+      },
+      result: {
+        type: Number,
+        default: 0,
       },
     },
     computed: {
@@ -112,6 +119,7 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
+    cursor: pointer;
   }
 
   .status {
