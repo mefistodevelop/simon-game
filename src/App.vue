@@ -3,7 +3,7 @@
     <h1 class="title">Simon the Game</h1>
     <div class="container">
       <Simon />
-      <Panel />
+      <Panel v-model="currentLevel" />
     </div>
   </div>
 </template>
@@ -15,6 +15,16 @@
   export default {
     name: 'App',
     components: { Simon, Panel },
+    data() {
+      return {
+        currentLevel: 'easy',
+        levels: {
+          easy: 1500,
+          medium: 1000,
+          hard: 400,
+        },
+      };
+    },
     
   }
 </script>

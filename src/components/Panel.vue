@@ -11,19 +11,34 @@
       <ul class="level-list">
         <li class="level">
           <label>
-            <input type="radio" name="level" checked>
+            <input
+              type="radio"
+              name="level"
+              v-model="inputValue"
+              value="easy"
+            >
             easy
           </label>
         </li>
         <li class="level">
           <label>
-            <input type="radio" name="level">
+            <input
+              type="radio"
+              name="level"
+              v-model="inputValue"
+              value="medium"
+            >
             medium
           </label>
         </li>
         <li class="level">
           <label>
-            <input type="radio" name="level">
+            <input
+              type="radio"
+              name="level"
+              v-model="inputValue"
+              value="hard"
+            >
             hard
           </label>
         </li>
@@ -33,7 +48,30 @@
 </template>
 
 <script>
-  export default {};
+  export default {
+    name: 'Panel',
+    data() {
+      return {
+        pickedLevel: 'easy',
+      };
+    },
+    props: {
+      value: {
+        type: String,
+        default: 'easy'
+      },
+    },
+    computed: {
+      inputValue: {
+        get() {
+          return this.value;
+        },
+        set(value) {
+          this.$emit('input', value);
+        },
+      },
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
