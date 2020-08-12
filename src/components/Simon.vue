@@ -4,12 +4,12 @@
       <div 
         class="quarter top-left"
         :class="{'top-left_flashed': activeElement === 'blue'}"
-        @click="playAudio(sounds.blue)"
+        @click="handleClick(1, 'blue')"
       ></div>
       <div 
         class="quarter bottom-left"
         :class="{'bottom-left_flashed': activeElement === 'yellow'}"
-        @click="playAudio(sounds.yellow)"
+        @click="handleClick(2, 'yellow')"
       ></div>
     </div>
 
@@ -17,12 +17,12 @@
       <div 
         class="quarter top-right"
         :class="{'top-right_flashed': activeElement === 'red'}"
-        @click="playAudio(sounds.red)"
+        @click="handleClick(3, 'red')"
       ></div>
       <div 
         class="quarter bottom-right"
         :class="{'bottom-right_flashed': activeElement === 'green'}"
-        @click="playAudio(sounds.green)"
+        @click="handleClick(4, 'green')"
       ></div>
     </div>
   </div>
@@ -46,6 +46,14 @@
       playAudio(src) {
         const audio = new Audio(src);
         audio.play();
+      },
+      autoPlay() {
+        if (this.activeElement === 'red') return true
+        return false
+      },
+      handleClick(number, color) {
+        this.$emit('tap', number);
+        this.playAudio(this.sounds[color]);
       },
     },
     props: {

@@ -2,8 +2,12 @@
   <div id="app">
     <h1 class="title">Simon the Game</h1>
     <div class="container">
-      <Simon :active="activeElement" />
-      <Panel v-on:start="startGame" v-model="currentLevel" />
+      <Simon :active="activeElement" v-on:tap="updateUserSequence" />
+      <Panel
+        :round="round"
+        v-on:start="startGame"
+        v-model="currentLevel"
+      />
     </div>
   </div>
 </template>
@@ -18,6 +22,8 @@
     data() {
       return {
         isStarted: false,
+        sequence: [],
+        userSequence: [],
         round: 0,
         currentLevel: 'easy',
         activeElement: '',
@@ -31,6 +37,12 @@
     methods: {
       startGame() {
         this.isStarted = true;
+        this.round = 1;
+        this.sequence = [];
+        this.userSequence = [];
+      },
+      updateUserSequence(tap) {
+        this.userSequence.push(tap);
       },
     },
   }
@@ -42,7 +54,6 @@
     padding: 2rem;
     max-width: 120rem;
     min-height: 100%;
-    background-color: lightblue;
     margin: 0 auto;
   }
 
