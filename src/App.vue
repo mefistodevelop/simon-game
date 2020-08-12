@@ -2,13 +2,19 @@
   <div id="app">
     <h1 class="title">Simon the Game</h1>
     <div class="container">
-      <Simon :active="activeElement" v-on:tap="updateUserSequence" />
+      <Simon
+        :isGame="isStarted"
+        :active="activeElement"
+        v-on:tap="handleUserClick"
+      />
       <Panel
         :round="round"
+        :result="result"
         v-on:start="startGame"
         v-model="currentLevel"
       />
     </div>
+    <button @click="updateSequence">TEST</button>
   </div>
 </template>
 
@@ -23,8 +29,9 @@
       return {
         isStarted: false,
         sequence: [],
-        userSequence: [],
+        sequenceCopy: [],
         round: 0,
+        result: 0,
         currentLevel: 'easy',
         activeElement: '',
         levels: {
@@ -39,10 +46,38 @@
         this.isStarted = true;
         this.round = 1;
         this.sequence = [];
+        this.sequenceCopy = [];
         this.userSequence = [];
+        this.updateSequence();
       },
-      updateUserSequence(tap) {
-        this.userSequence.push(tap);
+      stopGame() {
+        this.isStarted = false;
+        this.result = this.round;
+        this.round = 0;
+      },
+      increaseRound() {
+        if (!this.sequence.length) this.round += 1;
+      },
+      handleUserClick(tap) {
+        if (this.sequence[0] === tap) {
+          this.sequence.shift(tap);
+          this.increaseRound();
+          this.updateSequence();
+        } else {
+          this.stopGame();
+        }
+        console.log(this.sequence)
+      },
+      updateSequence() {
+        if (this.sequence.length === 0) {
+          const tap = Math.floor((Math.random() * 4) + 1);
+          const newSequence = [...this.sequenceCopy, tap];
+
+          this.sequence.push(...newSequence);
+          this.sequenceCopy.push(tap);
+          console.log('sequence' + this.sequence)
+        }
+        return;
       },
     },
   }
