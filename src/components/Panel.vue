@@ -2,8 +2,19 @@
   <div class="panel">
     <div class="info">
       <h2 class="subtitle">Round: {{ round }}</h2>
-      <button type="button" class="button" @click="$emit('start')">Start</button>
-      <span v-show="result > 0" class="status">You lost after {{ result }} rounds</span>
+      <button
+        type="button"
+        class="button"
+        @click="$emit('start')"
+        >
+          Start
+        </button>
+      <span
+        class="status"
+        v-show="result"
+        >
+          You lost after {{ result }} rounds
+        </span>
     </div>
 
     <div class="options">
@@ -91,7 +102,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
 
     margin-bottom: 2rem;
     height: 15rem;
@@ -99,6 +109,7 @@
 
   .subtitle {
     margin: 0;
+    margin-bottom: 2rem;
     padding: 0;
     font-size: 2rem;
     text-align: center;
@@ -109,6 +120,7 @@
     justify-content: center;
     align-items: center;
 
+    margin-bottom: 2rem;
     width: 10rem;
     height: 4rem;
 
