@@ -1,6 +1,7 @@
 <template>
   <div class="simon">
     {{ active ? setActive(active) : setActive('') }}
+
     <div class="half-left">
       <div 
         class="quarter top-left"
@@ -56,6 +57,7 @@
         const audio = new Audio(src);
         audio.play();
       },
+
       handleClick(number, color) {
         if (this.isGame) {
           this.$emit('tap', number);
@@ -63,6 +65,7 @@
         }
         return;
       },
+
       setActive(element) {
         this.activeElement = element;
       }
@@ -167,5 +170,4 @@
       }
     }
   }
-
 </style>
