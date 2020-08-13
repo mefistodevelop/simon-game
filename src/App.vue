@@ -124,15 +124,24 @@
   .title {
     margin: 0;
     padding: 0;
-    margin-bottom: 10rem;
+    margin-bottom: 5rem;
     text-align: center;
+
+    @media (min-width: 462px) {
+      margin-bottom: 10rem;
+    }
   }
 
   .container {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
     max-width: 60rem;
     margin: 0 auto; 
+
+    @media (min-width: 462px) {
+      justify-content: space-between;
+    }
   }
 </style>
 

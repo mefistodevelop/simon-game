@@ -92,6 +92,7 @@
 
   .simon {
     display: flex;
+    margin-bottom: 2rem;
   }
 
   .quarter {
