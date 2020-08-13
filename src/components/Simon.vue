@@ -1,16 +1,21 @@
 <template>
-  <div class="simon">    
+  <div class="simon">
+    {{ active ? setActive(active) : setActive('') }}
     <div class="half-left">
       <div 
         class="quarter top-left"
         :class="{'top-left_flashed': activeElement === 'blue'}"
         @click="handleClick(1, 'blue')"
-      ></div>
+      >
+        {{ activeElement === 'blue' ? playAudio(sounds.blue) : '' }}
+      </div>
       <div 
         class="quarter bottom-left"
         :class="{'bottom-left_flashed': activeElement === 'yellow'}"
         @click="handleClick(2, 'yellow')"
-      ></div>
+      >
+        {{ activeElement === 'yellow' ? playAudio(sounds.yellow) : '' }}
+      </div>
     </div>
 
     <div class="half-right">
@@ -18,12 +23,16 @@
         class="quarter top-right"
         :class="{'top-right_flashed': activeElement === 'red'}"
         @click="handleClick(3, 'red')"
-      ></div>
+      >
+        {{ activeElement === 'red' ? playAudio(sounds.red) : '' }}
+      </div>
       <div 
         class="quarter bottom-right"
         :class="{'bottom-right_flashed': activeElement === 'green'}"
         @click="handleClick(4, 'green')"
-      ></div>
+      >
+        {{ activeElement === 'green' ? playAudio(sounds.green) : '' }}
+      </div>
     </div>
   </div>
 </template>
@@ -33,7 +42,7 @@
     name: 'Simon',
     data() {
       return {
-        activeElement: this.active,
+        activeElement: '',
         sounds: {
           red: require('../assets/sounds/1.mp3'),
           blue: require('../assets/sounds/2.mp3'),
@@ -47,19 +56,25 @@
         const audio = new Audio(src);
         audio.play();
       },
-      autoPlay() {
-        if (this.activeElement === 'red') return true
-        return false
-      },
       handleClick(number, color) {
-        this.$emit('tap', number);
-        this.playAudio(this.sounds[color]);
+        if (this.isGame) {
+          this.$emit('tap', number);
+          this.playAudio(this.sounds[color]);
+        }
+        return;
       },
+      setActive(element) {
+        this.activeElement = element;
+      }
     },
     props: {
       active: {
         type: String,
         default: '',
+      },
+      isGame: {
+        type: Boolean,
+        default: false,
       },
     },
   };

@@ -14,7 +14,6 @@
         v-model="currentLevel"
       />
     </div>
-    <button @click="updateSequence">TEST</button>
   </div>
 </template>
 
@@ -33,6 +32,7 @@
         round: 0,
         result: 0,
         currentLevel: 'easy',
+        colors: ['blue', 'yellow', 'red', 'green'],
         activeElement: '',
         levels: {
           easy: 1500,
@@ -45,6 +45,7 @@
       startGame() {
         this.isStarted = true;
         this.round = 1;
+        this.result = 0;
         this.sequence = [];
         this.sequenceCopy = [];
         this.userSequence = [];
@@ -66,25 +67,48 @@
         } else {
           this.stopGame();
         }
-        console.log(this.sequence)
       },
       updateSequence() {
         if (this.sequence.length === 0) {
-          const tap = Math.floor((Math.random() * 4) + 1);
-          const newSequence = [...this.sequenceCopy, tap];
+          // delay between the last user click and
+          // the first flash of the next sequence
+          const delay = this.sequenceCopy.length ? this.levels[this.currentLevel] : 0;
 
-          this.sequence.push(...newSequence);
-          this.sequenceCopy.push(tap);
-          console.log('sequence' + this.sequence)
+          setTimeout(() => {
+            const tap = Math.floor((Math.random() * 4) + 1);
+            const newSequence = [...this.sequenceCopy, tap];
+
+            this.sequence.push(...newSequence);
+            this.sequenceCopy.push(tap);
+            this.playSequence();
+          }, delay);
         }
         return;
+      },
+      delay() {
+        // delay between sequnce flashes
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, this.levels[this.currentLevel]);
+        });
+      },
+      async playSequence() {
+        for(const element of this.sequence) {
+          if (!this.isStarted) return;
+          this.activeElement = this.colors[element - 1];
+
+          // duration of the flash
+          setTimeout(() => this.activeElement = '', 300);
+
+          await this.delay();
+        } 
       },
     },
   }
 </script>
 
 <style lang="scss" scoped>
-  $simon-size: 13rem;
   #app {
     padding: 2rem;
     max-width: 120rem;
@@ -95,7 +119,7 @@
   .title {
     margin: 0;
     padding: 0;
-    margin-bottom: 3rem;
+    margin-bottom: 10rem;
     text-align: center;
   }
 
@@ -105,6 +129,5 @@
     max-width: 60rem;
     margin: 0 auto; 
   }
-
 </style>
 
